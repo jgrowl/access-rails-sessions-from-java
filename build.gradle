@@ -1,0 +1,64 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'properties'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.saliman:gradle-properties-plugin:1.1.0'
+    }
+}
+
+/**
+ * This was added because if you try to run a jenkins build with no compilation changes like a properties file,
+ * the build would fail because the tests xml does not get updated because there is no need to run them again.
+ *
+ * Source: http://www.practicalgradle.org/blog/2011/06/incremental-tests-with-jenkins/
+ */
+task jenkinsTest{
+    inputs.files test.outputs.files
+    doLast{
+        def timestamp = System.currentTimeMillis()
+        test.testResultsDir.eachFile { it.lastModified = timestamp }
+    }
+}
+
+install.dependsOn(jenkinsTest)
+
+configurations.all {
+    resolutionStrategy.cacheDynamicVersionsFor 1, 'minutes'
+}
+
+if (hasProperty('buildNumber')) {
+    version = version + '+build.' + buildNumber
+}
+
+if (hasProperty('gitCommit')) {
+    version = version + '.' + gitCommit.substring(0, 7)
+}
+
+if (!hasProperty('environmentName')) {
+    environmentName = 'dev'
+}
+
+if(environmentName == 'dev') {
+    version = version + '-SNAPSHOT'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // This is a big dependency for what I am using it for. Right now it is just used for marshalling ruby objects.
+    // The unmarshaling is necessary because the session store stores marshaled objects directly in the db. Another
+    // option is changing the way the data is stored but would require monkey patching or customizing the session store.
+    compile 'org.jruby:jruby-complete:1.7.3'
+
+    // For base64 encoding.
+    compile 'commons-codec:commons-codec:1.8'
+
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
