@@ -1,4 +1,2 @@
-Instructions:
-Update settings.gradle with correct project name.
-Run gradle idea clean to generate project files.
-
+Description:
+    Simple api for accessing a persistent rails session store from java.
