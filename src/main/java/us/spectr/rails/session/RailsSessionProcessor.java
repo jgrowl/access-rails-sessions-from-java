@@ -19,6 +19,8 @@ public interface RailsSessionProcessor {
      */
     public Map<String, Object> unmarshalString(String railsSessionString);
 
+    public String marshalMap(Map<String, Object> railsSessionMap);
+
     /**
      * Base64 decodes a string. Rails' active record store base64 encodes all session by default.
      * @param encodedMessage

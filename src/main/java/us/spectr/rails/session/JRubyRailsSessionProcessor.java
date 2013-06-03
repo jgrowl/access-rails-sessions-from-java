@@ -35,6 +35,16 @@ public class JRubyRailsSessionProcessor implements RailsSessionProcessor {
     }
 
     @Override
+    public String marshalMap(Map<String, Object> railsSessionMap) {
+        RubyHash rubyHash = new RubyHash(ruby);
+        for (Map.Entry<String, Object> entry : railsSessionMap.entrySet()) {
+            rubyHash.put(entry.getKey(), entry.getValue());
+        }
+
+        return rubyHash.toString();
+    }
+
+    @Override
     public InputStream base64DecodeString(String encodedMessage) {
         return new ByteArrayInputStream(Base64.decodeBase64(encodedMessage));
     }

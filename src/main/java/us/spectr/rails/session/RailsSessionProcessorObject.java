@@ -25,4 +25,8 @@ public class RailsSessionProcessorObject {
     public static int getWardenUserIdAsInt(String sessionId) {
         return sRailsSessionProcessor.getWardenUserIdAsInt(sessionId);
     }
+
+    public static String marshalMap(Map<String, Object> railsSessionMap) {
+        return sRailsSessionProcessor.marshalMap(railsSessionMap);
+    }
 }
