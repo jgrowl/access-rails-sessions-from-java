@@ -57,6 +57,9 @@ dependencies {
     // option is changing the way the data is stored but would require monkey patching or customizing the session store.
     compile 'org.jruby:jruby-complete:1.7.3'
 
+    // For HttpSessions
+    compile 'org.apache.geronimo.specs:geronimo-servlet_3.0_spec:1.0'
+
     // For base64 encoding.
     compile 'commons-codec:commons-codec:1.8'
 

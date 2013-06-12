@@ -2,12 +2,15 @@ package us.spectr.rails.session;
 
 import org.apache.commons.codec.binary.Base64;
 import org.jruby.Ruby;
+import org.jruby.RubyArray;
 import org.jruby.RubyHash;
 import org.jruby.runtime.marshal.UnmarshalStream;
 
+import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -50,9 +53,25 @@ public class JRubyRailsSessionProcessor implements RailsSessionProcessor {
     }
 
     @Override
-    public int getWardenUserIdAsInt(String sessionId) {
-//        val data = StoreConnection.getSessionData(sessionId)
-//        data.get("warden.user.user.key").get(0).get(0).asInt()
-        return 0;
+    public Integer getWardenUserIdAsInt(HttpSession session) {
+        try {
+            return ((Long) getWardenUserId(session)).intValue();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public String getWardenUserIdAsString(HttpSession session) {
+        try {
+            return (String) getWardenUserId(session);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    protected Object getWardenUserId(HttpSession session) {
+        RubyArray wardenUserKey = (RubyArray) session.getAttribute("warden.user.user.key");
+        return ((RubyArray) wardenUserKey.get(0)).get(0);
     }
 }

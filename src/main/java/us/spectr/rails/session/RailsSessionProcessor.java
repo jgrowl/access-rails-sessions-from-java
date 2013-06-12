@@ -1,5 +1,6 @@
 package us.spectr.rails.session;
 
+import javax.servlet.http.HttpSession;
 import java.io.InputStream;
 import java.util.Map;
 
@@ -28,5 +29,7 @@ public interface RailsSessionProcessor {
      */
     public InputStream base64DecodeString(String encodedMessage);
 
-    public int getWardenUserIdAsInt(String sessionId);
+    public Integer getWardenUserIdAsInt(HttpSession session);
+
+    public String getWardenUserIdAsString(HttpSession session);
 }
