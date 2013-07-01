@@ -52,13 +52,22 @@ repositories {
 }
 
 dependencies {
+    // TODO: put compiled version in artifact server, for now use lib
     // This is a big dependency for what I am using it for. Right now it is just used for marshalling ruby objects.
     // The unmarshaling is necessary because the session store stores marshaled objects directly in the db. Another
     // option is changing the way the data is stored but would require monkey patching or customizing the session store.
-    compile 'org.jruby:jruby-complete:1.7.3'
+//    compile 'org.jruby:jruby-complete:1.7.3'
+    compile files('lib/jruby.jar')
 
     // For HttpSessions
-    compile 'org.apache.geronimo.specs:geronimo-servlet_3.0_spec:1.0'
+//    runtime ('org.eclipse.jetty:jetty-server:9.0.3.v20130506') {
+//        exclude group: 'org.eclipse.jetty', module: 'jetty-io'
+//        exclude group: 'org.eclipse.jetty', module: 'jetty-http'
+//        exclude group: 'org.eclipse.jetty', module: 'jetty-util'
+//        exclude group: 'org.eclipse.jetty', module: 'jetty-server'
+//    }
+
+    compile 'javax.servlet:javax.servlet-api:3.0.1'
 
     // For base64 encoding.
     compile 'commons-codec:commons-codec:1.8'
